@@ -27,5 +27,8 @@ func connectToServer(url string) {
 func main() {
 	s := gocron.NewScheduler()
 	s.Every(3).Seconds().Do(connectToServer, "http://www.exampie.com")
+	s.Every(3).Seconds().Do(connectToServer, "http://izlinix.com")
+	s.Every(3).Seconds().Do(connectToServer, "http://agroluftbild.de")
+	s.Every(3).Seconds().Do(connectToServer, "http://dinkelbrezel.de")
 	<-s.Start()
 }
