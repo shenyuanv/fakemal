@@ -17,6 +17,7 @@ int socket_connect(char *host, in_port_t port){
 
 	if((hp = gethostbyname(host)) == NULL){
 		herror("gethostbyname");
+        return -1;
 	}
 	bcopy(hp->h_addr, &addr.sin_addr, hp->h_length);
 	addr.sin_port = htons(port);
@@ -26,11 +27,12 @@ int socket_connect(char *host, in_port_t port){
 
 	if(sock == -1){
 		perror("setsockopt");
+        return -1;
 	}
 	
 	if(connect(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr_in)) == -1){
 		perror("connect");
-
+        return -1;
 	}
 	return sock;
 }
@@ -42,6 +44,9 @@ void connect_to(char* host){
 	char buffer[BUFFER_SIZE];
 
     fd = socket_connect(host, 80); 
+    if(fd <= 0){
+        return;
+    }
 	write(fd, "GET /\r\n", strlen("GET /\r\n")); // write(fd, char[]*, len);  
 	bzero(buffer, BUFFER_SIZE);
 	
